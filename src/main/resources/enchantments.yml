@@ -1,0 +1,69 @@
+# ╔══════════════════════════════════════════════════════════════════════╗
+# ║                   ShardBuyer — enchantment prices                    ║
+# ╚══════════════════════════════════════════════════════════════════════╝
+# Price of an enchantment of level N = base * per-level^(N-1)
+#   e.g. sharpness: base 15, per-level 1.6 -> I: 15, II: 24, III: 38.4, IV: 61.4, V: 98.3
+# Or explicitly per level:  levels: {1: 50, 2: 120, 3: 300}
+# A negative price (curses) lowers the value of the item.
+#
+# Enchanted book = ENCHANTED_BOOK price from prices.yml + sum of enchantments * books-multiplier
+# Enchanted armor/tool = item price (with durability) + sum of enchantments * items-multiplier
+# Enchantment names are shown by the client in each player's own language.
+
+enabled: true
+books-multiplier: 1.0
+items-multiplier: 1.0
+
+# For enchantments that are not listed (including custom ones from other plugins)
+default:
+  base: 10
+  per-level: 1.5
+
+enchantments:
+  # ── Armor ──
+  protection: {base: 15, per-level: 1.6}
+  fire_protection: {base: 8, per-level: 1.5}
+  feather_falling: {base: 10, per-level: 1.6}
+  blast_protection: {base: 8, per-level: 1.5}
+  projectile_protection: {base: 8, per-level: 1.5}
+  respiration: {base: 12, per-level: 1.6}
+  aqua_affinity: {base: 15}
+  thorns: {base: 12, per-level: 1.7}
+  depth_strider: {base: 14, per-level: 1.6}
+  frost_walker: {base: 25, per-level: 1.5}
+  soul_speed: {base: 30, per-level: 1.6}
+  swift_sneak: {base: 60, per-level: 1.7}
+  # ── Weapons ──
+  sharpness: {base: 15, per-level: 1.6}
+  smite: {base: 8, per-level: 1.5}
+  bane_of_arthropods: {base: 6, per-level: 1.5}
+  knockback: {base: 8, per-level: 1.5}
+  fire_aspect: {base: 18, per-level: 1.8}
+  looting: {base: 30, per-level: 1.8}
+  sweeping: {base: 12, per-level: 1.5}
+  sweeping_edge: {base: 12, per-level: 1.5}
+  # ── Tools ──
+  efficiency: {base: 12, per-level: 1.6}
+  silk_touch: {base: 50}
+  unbreaking: {base: 15, per-level: 1.7}
+  fortune: {base: 35, per-level: 1.9}
+  # ── Bow / crossbow / trident / fishing rod ──
+  power: {base: 12, per-level: 1.6}
+  punch: {base: 10, per-level: 1.5}
+  flame: {base: 20}
+  infinity: {base: 60}
+  multishot: {base: 30}
+  quick_charge: {base: 12, per-level: 1.6}
+  piercing: {base: 8, per-level: 1.4}
+  loyalty: {base: 15, per-level: 1.6}
+  impaling: {base: 8, per-level: 1.5}
+  riptide: {base: 15, per-level: 1.6}
+  channeling: {base: 40}
+  luck_of_the_sea: {base: 12, per-level: 1.6}
+  lure: {base: 10, per-level: 1.6}
+  # ── Special ──
+  mending:
+    levels: {1: 250}
+  # ── Curses (lower the price) ──
+  binding_curse: {base: -30}
+  vanishing_curse: {base: -30}

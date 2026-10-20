@@ -1,0 +1,39 @@
+name: ShardBuyer
+version: '1.0.0'
+main: dev.shardbuyer.ShardBuyer
+api-version: '1.20'
+description: Advanced item buyer — categories, leveling, dynamic market, exclusive items, auto-sell and prices in item descriptions
+authors: [ShardBuyer]
+depend: [Vault]
+softdepend: [ProtocolLib, PlaceholderAPI, Essentials, CMI, PlayerPoints, XConomy]
+
+# Commands are registered by the plugin itself: names and aliases are set in config.yml -> commands
+
+permissions:
+  shardbuyer.use:
+    description: Open the buyer menu
+    default: true
+  shardbuyer.sell:
+    description: Sell menu and /sell hand
+    default: true
+  shardbuyer.sell.all:
+    description: /sell all and the "sell whole inventory" button
+    default: true
+  shardbuyer.worth:
+    description: Price list (/worth)
+    default: true
+  shardbuyer.lore:
+    description: See prices in item descriptions
+    default: true
+  shardbuyer.autosell:
+    description: Use auto-sell
+    default: true
+  shardbuyer.admin:
+    description: Admin commands
+    default: op
+  shardbuyer.multiplier.vip:
+    description: Price multiplier from config.yml -> multipliers.permissions
+    default: false
+  shardbuyer.multiplier.premium:
+    description: Price multiplier from config.yml -> multipliers.permissions
+    default: false

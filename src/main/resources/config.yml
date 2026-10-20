@@ -1,0 +1,284 @@
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║                        ✦ ShardBuyer ✦                            ║
+# ║          Advanced item buyer for Paper 1.20.4                    ║
+# ╠══════════════════════════════════════════════════════════════════╣
+# ║  config.yml          — main settings (this file)                 ║
+# ║  lang/<code>/        — messages.yml + menus.yml (texts and GUI)  ║
+# ║  categories.yml      — categories and their items                ║
+# ║  prices.yml          — prices + auto-pricing from recipes        ║
+# ║  enchantments.yml    — enchantment prices                        ║
+# ║  exclusive.yml       — exclusive items with limits               ║
+# ║  item-names.yml      — optional custom item names                ║
+# ║                                                                  ║
+# ║  Colors: &a &l ...  HEX: &#C084FC                                ║
+# ║  (gradients also work: <gradient:#FF0000:#0000FF>text</gradient>)║
+# ║  Reload: /shardbuyer reload                                      ║
+# ╚══════════════════════════════════════════════════════════════════╝
+
+# Language of messages and menus:
+#   en — English, es — Español, ru — Русский, uk — Українська, pt — Português, fr — Français
+# Files are created in plugins/ShardBuyer/lang/<code>/. To add your own language, copy the "en"
+# folder to e.g. "lang/de" and set language: de
+language: en
+
+# ─────────────────────────────── Commands ───────────────────────────────
+# Names and aliases of all commands. Write them without "/".
+# Changes here need a server RESTART (not /shardbuyer reload).
+commands:
+  # If another plugin already has a command with the same name (e.g. /sell and /worth of EssentialsX),
+  # ShardBuyer takes it over. Set to false to keep the other plugin's command
+  # (ShardBuyer's one will then be available as /shardbuyer:<name>).
+  override-other-plugins: true
+  # Main buyer menu: /buyer, /buyer lore, /buyer autosell, /buyer level, /buyer exclusive, /buyer <category>
+  menu:
+    name: buyer
+    aliases: []
+    # aliases:
+    #   - shop
+    #   - skup
+  # Sell menu, /sell hand, /sell all
+  sell:
+    name: sell
+    aliases: []
+    # aliases:
+    #   - sellmenu
+  # Price list: /worth, /worth hand, /worth lore
+  worth:
+    name: worth
+    aliases: []
+    # aliases:
+    #   - prices
+  # Admin commands (permission shardbuyer.admin)
+  admin:
+    name: shardbuyer
+    aliases: []
+    # aliases:
+    #   - sb
+
+# Buyer menu mode:
+#   CATEGORIES — main menu with category icons; every category has its own menu
+#                (lang/<code>/menus.yml -> category-menu / category-menus, or categories.yml -> menu)
+#   PAGED      — one menu where pages flip through categories (lang/<code>/menus.yml -> paged-menu)
+menu-mode: CATEGORIES
+
+# Delay between clicks in menus (ms) — anti-spam
+click-cooldown-ms: 120
+
+# ─────────────────────────────── Number format ───────────────────────────────
+# Money format
+number-format:
+  # FULL  — full number: 1,000,000 / 1 000 000 / 1.000.000 / 1000000
+  # SHORT — shortened:   1.5k / 2.3m / 1b
+  mode: FULL
+  # Thousands separator: SPACE (1 000), COMMA (1,000), DOT (1.000), NONE (1000) or any symbol, e.g. "'"
+  thousands-separator: COMMA
+  # Decimal separator: AUTO (picked automatically: dot for COMMA, comma for DOT), DOT, COMMA
+  decimal-separator: AUTO
+  # Digits after the decimal point
+  decimals: 2
+  # Remove trailing zeros: 15.00 -> 15, 15.50 -> 15.5
+  trim-zeros: true
+  # Settings of the SHORT mode
+  short:
+    decimals: 1
+    # numbers below this value are shown in FULL format
+    min-value: 1000
+    # units, thousands, millions, billions, trillions, quadrillions
+    suffixes: ["", "k", "m", "b", "t", "q"]
+
+# Format of leveling points and item amounts (same options)
+points-format:
+  mode: FULL
+  thousands-separator: COMMA
+  decimal-separator: AUTO
+  decimals: 0
+  trim-zeros: true
+  short:
+    decimals: 1
+    min-value: 10000
+    suffixes: ["", "k", "m", "b", "t", "q"]
+
+# Time format (exclusive items timer, booster). Translate the units to your language if you like.
+time-format:
+  days: "{v}d"
+  hours: "{v}h"
+  minutes: "{v}m"
+  seconds: "{v}s"
+  separator: " "
+  # max units shown: 2 -> "1d 4h", 3 -> "1d 4h 30m"
+  max-units: 3
+
+# ─────────────────────────────── Selling ───────────────────────────────
+selling:
+  # Allow selling renamed items
+  allow-renamed-items: false
+  # Allow selling items with a description (lore) — usually items of other plugins (keys, crates...)
+  allow-items-with-lore: false
+  # Allow selling items with CustomModelData (resource pack items)
+  allow-custom-model-data: false
+  # Protection: "quick" selling (clicking an item in a menu, "sell whole inventory", /sell all, auto-sell)
+  # never touches enchanted, damaged or renamed items.
+  # They can still be sold through the sell menu (/sell) or /sell hand.
+  protect-special-items: true
+  # Durability: damaged tools/armor are cheaper
+  durability:
+    enabled: true
+    # minimal share of the price (0.1 = an almost broken item is still worth 10%)
+    min-factor: 0.1
+    # also reduce the value of enchantments with durability
+    affect-enchantments: false
+  # What clicking an item in a category menu does:
+  #   SELL_ALL — sell all such items from the inventory
+  #   SELL_STACK — sell one stack
+  #   SELL_ONE — sell one item
+  #   TOGGLE_AUTOSELL — toggle auto-sell of this item
+  #   NONE — nothing
+  # Click types: LEFT, RIGHT, SHIFT_LEFT, SHIFT_RIGHT, MIDDLE, DROP, CONTROL_DROP, SWAP_OFFHAND
+  click-actions:
+    LEFT: SELL_ALL
+    RIGHT: SELL_STACK
+    SHIFT_LEFT: SELL_ONE
+    SHIFT_RIGHT: TOGGLE_AUTOSELL
+    DROP: SELL_ONE
+  # Show what was sold and for how much when several kinds of items are sold
+  show-details: true
+  max-detail-lines: 8
+
+# ─────────────────────────────── Shulker boxes ───────────────────────────────
+shulker-boxes:
+  # Sell the contents of shulker boxes (sell menu, /sell hand)
+  sell-contents: true
+  # RETURN_BOX — the contents are sold, the box goes back to the inventory
+  #              (unsellable items stay inside the box)
+  # SELL_BOX   — the box is sold too (if nothing unsellable is left inside)
+  mode: RETURN_BOX
+
+# ─────────────────────────────── Sell menu (/sell) ───────────────────────────────
+sell-menu:
+  # Sell everything in the menu when it is closed. If false — items are returned on close.
+  sell-on-close: true
+  # Close the menu after pressing the green button
+  close-after-button: false
+
+# ─────────────────────────────── Leveling ───────────────────────────────
+leveling:
+  # GLOBAL       — one shared level for all categories
+  # PER_CATEGORY — every category has its own level (custom levels: categories.yml -> levels)
+  # DISABLED     — leveling is off
+  # Leveling of a single category can be turned off: categories.yml -> <category>.leveling: false
+  mode: GLOBAL
+  # Points given for every 1$ of base price (without bonuses).
+  # Custom points for specific items can be set in prices.yml
+  points-per-money: 1.0
+  progress-bar:
+    length: 20
+    symbol: "▌"
+    complete-color: "&#C084FC"
+    incomplete-color: "&8"
+  level-up:
+    # {level}, {bonus}, {category}. Empty string — don't show
+    title: "&#C084FC&lLEVEL &#67E8F9&lUP!"
+    subtitle: "&7Level &f{level} &8• &#4ADE80+{bonus}%"
+  # LIST — levels are listed below, FORMULA — calculated by a formula
+  type: LIST
+  # points — total points required, bonus — price bonus in percent
+  levels:
+    1: {points: 0, bonus: 0}
+    2: {points: 1000, bonus: 2}
+    3: {points: 3000, bonus: 4}
+    4: {points: 7500, bonus: 6}
+    5: {points: 15000, bonus: 8}
+    6: {points: 30000, bonus: 10}
+    7: {points: 60000, bonus: 13}
+    8: {points: 120000, bonus: 16}
+    9: {points: 250000, bonus: 20}
+    10: {points: 500000, bonus: 25}
+  formula:
+    max-level: 50
+    # points needed for level 2; every next level costs "growth" times more
+    base-points: 1000
+    growth: 1.25
+    # bonus for every level above the first, %
+    bonus-per-level: 1.0
+
+# ─────────────────────────────── Dynamic market ───────────────────────────────
+# The more of an item ALL players sell, the lower its price (and points).
+# Prices recover over time.
+dynamic-pricing:
+  enabled: true
+  # also reduce leveling points together with the price
+  affect-points: true
+  # every units-per-step sold items lower the price by step-percent percent...
+  units-per-step: 2000
+  step-percent: 5
+  # ...but never below min-percent percent of the base price
+  min-percent: 25
+  recovery:
+    # how often part of the sold amount is "forgotten" (s, m, h, d)
+    interval: 10m
+    # how many percent of the sold amount are forgotten each time
+    percent: 10
+  # Custom rules for specific items
+  overrides:
+    DIAMOND: {units-per-step: 200, step-percent: 3, min-percent: 40}
+    NETHERITE_SCRAP: {units-per-step: 50, step-percent: 5, min-percent: 40}
+    ANCIENT_DEBRIS: {units-per-step: 50, step-percent: 5, min-percent: 40}
+  # Items whose price never drops
+  exclude: []
+
+# ─────────────────────────────── Auto-sell ───────────────────────────────
+# An item is sold the moment it is picked up (if the player enabled auto-sell for it in the menu:
+# Shift+Right click on the item by default). Works even with a full inventory.
+autosell:
+  # false — auto-sell is completely disabled (no buttons, nothing is sold on pickup)
+  enabled: true
+  # master switch state for new players
+  default-enabled: true
+  # highlight items with auto-sell in menus
+  glow-in-menu: true
+  # how to notify about auto-sell: CHAT / ACTIONBAR / NONE
+  notify: ACTIONBAR
+
+# ─────────────────────────────── Prices in item descriptions ───────────────────────────────
+# Requires ProtocolLib 5.2.0+. The price is added to the description ON THE CLIENT ONLY:
+#  - only the player sees it (with their own level and bonuses)
+#  - real items are not changed, so they stack normally
+#  - the price depends on the stack size and updates on every inventory change
+# Players can turn it off for themselves: /buyer lore (or /worth lore, or a menu button)
+price-lore:
+  enabled: true
+  # shown by default for players
+  default-enabled: true
+  # show in creative mode (not recommended — a creative client may save the text into the item)
+  show-in-creative: false
+  # also show in chests and other containers, not only in the player inventory
+  show-in-containers: true
+  # force a price refresh every N seconds (the market changes over time). 0 — disabled
+  refresh-seconds: 0
+  # {price} — price of the whole stack, {price_one} — of one item, {amount} — stack size
+  # Line conditions: [stack] — only if the stack has more than 1 item, [shulker] — shulker box with items
+  lines:
+    - ""
+    - "[!shulker]&#4ADE80$&f{price}"
+    - "[shulker]&#C084FC✦ &#4ADE80$&f{price}"
+    - "[stack][!shulker]&8× {amount} &8• &7${price_one}"
+
+# ─────────────────────────────── Multipliers ───────────────────────────────
+multipliers:
+  # Price multiplier by permission (the biggest one the player has is used)
+  permissions:
+    shardbuyer.multiplier.vip: 1.05
+    shardbuyer.multiplier.premium: 1.10
+
+# ─────────────────────────────── Sounds ───────────────────────────────
+# "name:volume:pitch". Empty string — no sound
+sounds:
+  sell: "entity.experience_orb.pickup:0.8:1.2"
+  fail: "entity.villager.no:0.8:1"
+  level-up: "entity.player.levelup:1:1"
+  click: "ui.button.click:0.4:1.2"
+  toggle: "block.amethyst_block.chime:1:1.4"
+
+data:
+  # how often player and market data is saved (minutes)
+  autosave-minutes: 5

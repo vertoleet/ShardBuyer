@@ -1,0 +1,151 @@
+# ╔════════════════════════════════════════════════════════════╗
+# ║              ShardBuyer — messages (Português)
+# ╚════════════════════════════════════════════════════════════╝
+# Colors: &a, &l ...  HEX: &#C084FC  (gradients are supported too: <gradient:#C084FC:#67E8F9>text</gradient>)
+# {prefix} — the prefix below. {cmd_menu} {cmd_sell} {cmd_worth} {cmd_admin} — command names from config.yml
+# An empty string "" disables a message. Multi-line messages can be written as a list.
+# Item names ({item}) are shown in each player's own client language automatically.
+
+prefix: "&#C084FC&lShard&#67E8F9&lBuyer &8» &7"
+
+no-permission: "{prefix}&#F87171Você não tem permissão para isso."
+players-only: "{prefix}&#F87171Este comando só pode ser usado por jogadores."
+reloaded: "{prefix}&#4ADE80Recarregado em &f{ms} ms&#4ADE80. Itens com preço: &f{count}"
+unknown-category: "{prefix}&#F87171Categoria &f{category} &#F87171não encontrada."
+
+status:
+  enabled: "&#4ADE80LIGADO"
+  disabled: "&#F87171DESLIGADO"
+
+help:
+  - "&8&m                                                    "
+  - "  &#C084FC&lShard&#67E8F9&lBuyer &8• &7Comandos"
+  - ""
+  - "  &#C084FC/{cmd_menu} &8[categoria] &8— &7abrir o comprador"
+  - "  &#C084FC/{cmd_sell} &8— &7menu de venda (coloque os itens e feche)"
+  - "  &#C084FC/{cmd_sell} hand &8— &7vender o item da sua mão"
+  - "  &#C084FC/{cmd_sell} all &8— &7vender todo o inventário"
+  - "  &#C084FC/{cmd_worth} &8— &7preços de todos os itens"
+  - "  &#C084FC/{cmd_worth} hand &8— &7preço do item da sua mão"
+  - "  &#C084FC/{cmd_menu} lore &8— &7mostrar/ocultar preços na descrição"
+  - "  &#C084FC/{cmd_menu} autosell &8— &7ligar/desligar a venda automática"
+  - "  &#C084FC/{cmd_menu} level &8— &7seu nível de comprador"
+  - "  &#C084FC/{cmd_menu} exclusive &8— &7itens exclusivos"
+  - "&8&m                                                    "
+
+sell:
+  # {money} {amount} {positions}, {points} = points-part (or empty)
+  success: "{prefix}&fVendido &#67E8F9{amount} &fitens por &#4ADE80${money}{points}"
+  points-part: " &8(&#C084FC+{points} &7pontos&8)"
+  detail-line: "  &8▸ &7{item} &8×&f{amount} &8→ &#4ADE80${money}"
+  detail-more: "  &8▸ &7...e mais &f{count}"
+  nothing: "{prefix}&#F87171Você não tem nada que possa ser vendido."
+  nothing-item: "{prefix}&#F87171Você não tem &f{item}&#F87171 para vender."
+  nothing-category: "{prefix}&#F87171Você não tem itens de {category}&#F87171."
+  failed: "{prefix}&#F87171Não foi possível depositar o dinheiro. Seus itens foram devolvidos."
+  returned: "{prefix}&#FBBF24Itens não vendáveis foram devolvidos &7({count})"
+  hand-empty: "{prefix}&#F87171Segure um item na mão."
+  hand-unsellable: "{prefix}&#F87171Este item não pode ser vendido."
+  menu-empty: "{prefix}&7Coloque itens no menu para vendê-los."
+  usage: "{prefix}&7Uso: &#C084FC/{cmd_sell} &8| &#C084FC/{cmd_sell} hand &8| &#C084FC/{cmd_sell} all"
+
+autosell:
+  sold: "&#4ADE80+${money} &8| &f{item} &7×{amount}{points}"
+  item-enabled: "{prefix}&#4ADE80Venda automática ligada para &f{item}&#4ADE80."
+  item-disabled: "{prefix}&#F87171Venda automática desligada para &f{item}&#F87171."
+  master-enabled: "{prefix}&#4ADE80Venda automática LIGADA &7(itens escolhidos: {count})"
+  master-disabled: "{prefix}&#F87171Venda automática DESLIGADA."
+  disabled: "{prefix}&#F87171A venda automática está desativada neste servidor."
+
+lore:
+  enabled: "{prefix}&#4ADE80Os preços agora aparecem na descrição dos itens."
+  disabled: "{prefix}&#F87171Os preços não aparecem mais na descrição dos itens."
+  # {reason}
+  unavailable: "{prefix}&#F87171Preços na descrição indisponíveis: &f{reason}"
+  reason-missing: "ProtocolLib não está instalado (é necessária a versão 5.2.0 ou mais recente)"
+  reason-disabled: "ProtocolLib {version} não iniciou — provavelmente esta versão não suporta o seu servidor, use 5.2.0+"
+  reason-error: "erro ao conectar ao ProtocolLib: {error}"
+  reason-config: "desativado no config.yml (price-lore.enabled: false)"
+
+level:
+  # {level} {bonus} {category_name}, {category} = category-part (or empty)
+  up: "{prefix}&#FBBF24Seu nível de comprador{category} &#FBBF24subiu para &f{level}&#FBBF24! Bônus de preço: &#4ADE80+{bonus}%"
+  category-part: " &7({category}&7)"
+  disabled: "{prefix}&#F87171Os níveis estão desativados."
+  info-header: "{prefix}&fSeu nível de comprador:"
+  info-line: "  &7{category} &fNv. &#67E8F9{level}&7/&#67E8F9{max_level} &8| &#4ADE80+{bonus}% &8| &f{points}&7/&f{next_points} {progress_bar} &7{progress}%"
+  info-line-max: "  &7{category} &fNv. &#67E8F9{level} &#FBBF24(máximo) &8| &#4ADE80+{bonus}%"
+  mode:
+    global: "global"
+    per_category: "por categoria"
+    disabled: "desativado"
+
+worth:
+  hand: "{prefix}&f{item} &7×{amount}&f: &#4ADE80${price} &8(cada: ${price_one})"
+  hand-shulker: "{prefix}&fO conteúdo desta caixa de shulker vale &#4ADE80${price}"
+  unsellable: "{prefix}&f{item} &#F87171não pode ser vendido &8({reason}&8)"
+  search-prompt: "{prefix}&#FBBF24Digite no chat o nome de um item para pesquisar. &7(digite cancel para cancelar)"
+  search-cancelled: "{prefix}&7Pesquisa cancelada."
+
+# Why an item cannot be sold
+reasons:
+  ok: "&#4ADE80pode ser vendido"
+  empty: "&7vazio"
+  no_price: "&7sem preço"
+  disabled: "&7venda proibida"
+  renamed: "&7item renomeado"
+  lore: "&7item especial"
+  custom_model: "&7item personalizado"
+  container_not_empty: "&7tem itens dentro"
+  gui: "&7item de menu"
+
+exclusive:
+  limit-reached: "{prefix}&#F87171Você já vendeu o máximo de &f{item}&#F87171. Renova em &f{time}"
+  sold: "{prefix}&#C084FCExclusivo: &fvendido &#67E8F9{amount} &f{item} por &#4ADE80${money}{points} &8(restam {left}/{limit})"
+  reset-broadcast: "{prefix}&#C084FCOs itens exclusivos foram renovados! &7Veja &#C084FC/{cmd_menu} exclusive"
+  disabled: "{prefix}&#F87171Os itens exclusivos estão desativados."
+  limit-mode:
+    player: "por jogador"
+    global: "compartilhado no servidor"
+
+booster:
+  started: "{prefix}&#FBBF24&lBOOSTER! &fTodos os preços do comprador &#FBBF24{multiplier} &fpor &#FBBF24{time}&f!"
+  stopped: "{prefix}&7O booster foi interrompido."
+  ended: "{prefix}&7O booster global de preços terminou."
+
+admin:
+  help:
+    - "&8&m                                                    "
+    - "  &#C084FC&lShard&#67E8F9&lBuyer &8• &7Admin"
+    - ""
+    - "  &#C084FC/{cmd_admin} reload &8— &7recarregar todos os arquivos"
+    - "  &#C084FC/{cmd_admin} setprice <preço> [item] &8— &7definir um preço (item da mão se vazio)"
+    - "  &#C084FC/{cmd_admin} delprice [item] &8— &7remover um preço manual"
+    - "  &#C084FC/{cmd_admin} info &8— &7detalhes do preço do item na mão"
+    - "  &#C084FC/{cmd_admin} points <jogador> <add|set|take> <quantidade> [categoria]"
+    - "  &#C084FC/{cmd_admin} resetlevel <jogador> &8— &7resetar níveis"
+    - "  &#C084FC/{cmd_admin} market <reset|info> [item] &8— &7mercado dinâmico"
+    - "  &#C084FC/{cmd_admin} exclusive reset &8— &7renovar exclusivos agora"
+    - "  &#C084FC/{cmd_admin} booster <multiplicador> <tempo> &8| &#C084FC/{cmd_admin} booster stop"
+    - "  &#C084FC/{cmd_admin} dump &8— &7exportar todos os preços para computed-prices.yml"
+    - "&8&m                                                    "
+  bad-number: "{prefix}&#F87171Número inválido: &f{value}"
+  unknown-item: "{prefix}&#F87171Item desconhecido: &f{item}"
+  price-set: "{prefix}&#4ADE80Preço de &f{item} &#4ADE80definido para &f${price}"
+  price-removed: "{prefix}&#4ADE80Preço manual de &f{item} &#4ADE80removido. Preço atual: &f${price}"
+  source-manual: "&#FBBF24manual (prices.yml)"
+  source-auto: "&#67E8F9calculado pelas receitas"
+  info:
+    - "{prefix}&f{item} &8({material})"
+    - "  &7Vendável: {sellable} &8({reason}&8)"
+    - "  &7Preço base: &#4ADE80${base} &8— {source}"
+    - "  &7Este item: &#4ADE80${unit} &8| &7para você: &#4ADE80${player_price}"
+    - "  &7Mercado: &f{market}% &8(chave {market_key}, vendidos {sold})"
+    - "  &7Categoria: &f{category} &8| &7pontos por unidade: &#C084FC{points}"
+  level-reset: "{prefix}&#4ADE80Os níveis de &f{player} &#4ADE80foram resetados."
+  need-category: "{prefix}&#F87171No modo PER_CATEGORY você precisa informar uma categoria."
+  points-changed: "{prefix}&f{player} &#4ADE80agora tem &f{points} &#4ADE80pontos (nível {level})."
+  market-reset: "{prefix}&#4ADE80Mercado resetado: &f{item}"
+  market-info: "{prefix}&f{item}&7: vendidos &f{sold}&7, preço &f{percent}%"
+  exclusive-reset: "{prefix}&#4ADE80Os itens exclusivos foram renovados."
+  dumped: "{prefix}&#4ADE80Exportados &f{count} &#4ADE80preços &7→ plugins/ShardBuyer/computed-prices.yml"

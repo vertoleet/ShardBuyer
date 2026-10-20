@@ -1,0 +1,151 @@
+# ╔════════════════════════════════════════════════════════════╗
+# ║              ShardBuyer — messages (English)
+# ╚════════════════════════════════════════════════════════════╝
+# Colors: &a, &l ...  HEX: &#C084FC  (gradients are supported too: <gradient:#C084FC:#67E8F9>text</gradient>)
+# {prefix} — the prefix below. {cmd_menu} {cmd_sell} {cmd_worth} {cmd_admin} — command names from config.yml
+# An empty string "" disables a message. Multi-line messages can be written as a list.
+# Item names ({item}) are shown in each player's own client language automatically.
+
+prefix: "&#C084FC&lShard&#67E8F9&lBuyer &8» &7"
+
+no-permission: "{prefix}&#F87171You don't have permission to do that."
+players-only: "{prefix}&#F87171This command can only be used by players."
+reloaded: "{prefix}&#4ADE80Reloaded in &f{ms} ms&#4ADE80. Items with a price: &f{count}"
+unknown-category: "{prefix}&#F87171Category &f{category} &#F87171was not found."
+
+status:
+  enabled: "&#4ADE80ON"
+  disabled: "&#F87171OFF"
+
+help:
+  - "&8&m                                                    "
+  - "  &#C084FC&lShard&#67E8F9&lBuyer &8• &7Commands"
+  - ""
+  - "  &#C084FC/{cmd_menu} &8[category] &8— &7open the buyer"
+  - "  &#C084FC/{cmd_sell} &8— &7sell menu (put items in and close)"
+  - "  &#C084FC/{cmd_sell} hand &8— &7sell the item in your hand"
+  - "  &#C084FC/{cmd_sell} all &8— &7sell your whole inventory"
+  - "  &#C084FC/{cmd_worth} &8— &7prices of all items"
+  - "  &#C084FC/{cmd_worth} hand &8— &7price of the item in your hand"
+  - "  &#C084FC/{cmd_menu} lore &8— &7toggle prices in item descriptions"
+  - "  &#C084FC/{cmd_menu} autosell &8— &7toggle auto-sell"
+  - "  &#C084FC/{cmd_menu} level &8— &7your buyer level"
+  - "  &#C084FC/{cmd_menu} exclusive &8— &7exclusive items"
+  - "&8&m                                                    "
+
+sell:
+  # {money} {amount} {positions}, {points} = points-part (or empty)
+  success: "{prefix}&fSold &#67E8F9{amount} &fitems for &#4ADE80${money}{points}"
+  points-part: " &8(&#C084FC+{points} &7points&8)"
+  detail-line: "  &8▸ &7{item} &8×&f{amount} &8→ &#4ADE80${money}"
+  detail-more: "  &8▸ &7...and &f{count} &7more"
+  nothing: "{prefix}&#F87171You have nothing that can be sold."
+  nothing-item: "{prefix}&#F87171You don't have any &f{item}&#F87171 to sell."
+  nothing-category: "{prefix}&#F87171You have no items from {category}&#F87171."
+  failed: "{prefix}&#F87171Could not deposit the money. Your items were returned."
+  returned: "{prefix}&#FBBF24Unsellable items were returned to you &7({count})"
+  hand-empty: "{prefix}&#F87171Hold an item in your hand."
+  hand-unsellable: "{prefix}&#F87171This item cannot be sold."
+  menu-empty: "{prefix}&7Put items into the menu to sell them."
+  usage: "{prefix}&7Usage: &#C084FC/{cmd_sell} &8| &#C084FC/{cmd_sell} hand &8| &#C084FC/{cmd_sell} all"
+
+autosell:
+  sold: "&#4ADE80+${money} &8| &f{item} &7×{amount}{points}"
+  item-enabled: "{prefix}&#4ADE80Auto-sell enabled for &f{item}&#4ADE80."
+  item-disabled: "{prefix}&#F87171Auto-sell disabled for &f{item}&#F87171."
+  master-enabled: "{prefix}&#4ADE80Auto-sell is ON &7(selected items: {count})"
+  master-disabled: "{prefix}&#F87171Auto-sell is OFF."
+  disabled: "{prefix}&#F87171Auto-sell is disabled on this server."
+
+lore:
+  enabled: "{prefix}&#4ADE80Prices in item descriptions are now shown."
+  disabled: "{prefix}&#F87171Prices in item descriptions are now hidden."
+  # {reason}
+  unavailable: "{prefix}&#F87171Prices in item descriptions are unavailable: &f{reason}"
+  reason-missing: "ProtocolLib is not installed (version 5.2.0 or newer is required)"
+  reason-disabled: "ProtocolLib {version} failed to start — most likely this version does not support your server, use 5.2.0+"
+  reason-error: "error while hooking into ProtocolLib: {error}"
+  reason-config: "disabled in config.yml (price-lore.enabled: false)"
+
+level:
+  # {level} {bonus} {category_name}, {category} = category-part (or empty)
+  up: "{prefix}&#FBBF24Your buyer level{category} &#FBBF24is now &f{level}&#FBBF24! Price bonus: &#4ADE80+{bonus}%"
+  category-part: " &7({category}&7)"
+  disabled: "{prefix}&#F87171Leveling is disabled."
+  info-header: "{prefix}&fYour buyer level:"
+  info-line: "  &7{category} &fLv. &#67E8F9{level}&7/&#67E8F9{max_level} &8| &#4ADE80+{bonus}% &8| &f{points}&7/&f{next_points} {progress_bar} &7{progress}%"
+  info-line-max: "  &7{category} &fLv. &#67E8F9{level} &#FBBF24(max) &8| &#4ADE80+{bonus}%"
+  mode:
+    global: "global"
+    per_category: "per category"
+    disabled: "disabled"
+
+worth:
+  hand: "{prefix}&f{item} &7×{amount}&f: &#4ADE80${price} &8(each: ${price_one})"
+  hand-shulker: "{prefix}&fThe contents of this shulker box sell for &#4ADE80${price}"
+  unsellable: "{prefix}&f{item} &#F87171cannot be sold &8({reason}&8)"
+  search-prompt: "{prefix}&#FBBF24Type an item name in chat to search. &7(type cancel to abort)"
+  search-cancelled: "{prefix}&7Search cancelled."
+
+# Why an item cannot be sold
+reasons:
+  ok: "&#4ADE80can be sold"
+  empty: "&7empty"
+  no_price: "&7no price"
+  disabled: "&7selling is forbidden"
+  renamed: "&7renamed item"
+  lore: "&7special item"
+  custom_model: "&7custom item"
+  container_not_empty: "&7has items inside"
+  gui: "&7menu item"
+
+exclusive:
+  limit-reached: "{prefix}&#F87171You have already sold the maximum of &f{item}&#F87171. Resets in &f{time}"
+  sold: "{prefix}&#C084FCExclusive: &fsold &#67E8F9{amount} &f{item} for &#4ADE80${money}{points} &8({left}/{limit} left)"
+  reset-broadcast: "{prefix}&#C084FCExclusive items have been refreshed! &7Check &#C084FC/{cmd_menu} exclusive"
+  disabled: "{prefix}&#F87171Exclusive items are disabled."
+  limit-mode:
+    player: "per player"
+    global: "shared by the server"
+
+booster:
+  started: "{prefix}&#FBBF24&lBOOSTER! &fAll buyer prices are &#FBBF24{multiplier} &ffor &#FBBF24{time}&f!"
+  stopped: "{prefix}&7The booster has been stopped."
+  ended: "{prefix}&7The global price booster has ended."
+
+admin:
+  help:
+    - "&8&m                                                    "
+    - "  &#C084FC&lShard&#67E8F9&lBuyer &8• &7Admin"
+    - ""
+    - "  &#C084FC/{cmd_admin} reload &8— &7reload all files"
+    - "  &#C084FC/{cmd_admin} setprice <price> [item] &8— &7set a price (item in hand if empty)"
+    - "  &#C084FC/{cmd_admin} delprice [item] &8— &7remove a manual price"
+    - "  &#C084FC/{cmd_admin} info &8— &7price breakdown of the item in hand"
+    - "  &#C084FC/{cmd_admin} points <player> <add|set|take> <amount> [category]"
+    - "  &#C084FC/{cmd_admin} resetlevel <player> &8— &7reset leveling"
+    - "  &#C084FC/{cmd_admin} market <reset|info> [item] &8— &7dynamic market"
+    - "  &#C084FC/{cmd_admin} exclusive reset &8— &7refresh exclusive items now"
+    - "  &#C084FC/{cmd_admin} booster <multiplier> <time> &8| &#C084FC/{cmd_admin} booster stop"
+    - "  &#C084FC/{cmd_admin} dump &8— &7export all prices to computed-prices.yml"
+    - "&8&m                                                    "
+  bad-number: "{prefix}&#F87171Invalid number: &f{value}"
+  unknown-item: "{prefix}&#F87171Unknown item: &f{item}"
+  price-set: "{prefix}&#4ADE80Price of &f{item} &#4ADE80set to &f${price}"
+  price-removed: "{prefix}&#4ADE80Manual price of &f{item} &#4ADE80removed. Current price: &f${price}"
+  source-manual: "&#FBBF24manual (prices.yml)"
+  source-auto: "&#67E8F9calculated from recipes"
+  info:
+    - "{prefix}&f{item} &8({material})"
+    - "  &7Sellable: {sellable} &8({reason}&8)"
+    - "  &7Base price: &#4ADE80${base} &8— {source}"
+    - "  &7This item: &#4ADE80${unit} &8| &7for you: &#4ADE80${player_price}"
+    - "  &7Market: &f{market}% &8(key {market_key}, sold {sold})"
+    - "  &7Category: &f{category} &8| &7points each: &#C084FC{points}"
+  level-reset: "{prefix}&#4ADE80Leveling of &f{player} &#4ADE80has been reset."
+  need-category: "{prefix}&#F87171In PER_CATEGORY mode you must specify a category."
+  points-changed: "{prefix}&f{player} &#4ADE80now has &f{points} &#4ADE80points (level {level})."
+  market-reset: "{prefix}&#4ADE80Market reset: &f{item}"
+  market-info: "{prefix}&f{item}&7: sold &f{sold}&7, price &f{percent}%"
+  exclusive-reset: "{prefix}&#4ADE80Exclusive items have been refreshed."
+  dumped: "{prefix}&#4ADE80Exported &f{count} &#4ADE80prices &7→ plugins/ShardBuyer/computed-prices.yml"

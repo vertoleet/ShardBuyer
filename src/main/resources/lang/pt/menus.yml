@@ -1,0 +1,654 @@
+# ╔════════════════════════════════════════════════════════════════════════╗
+# ║                ShardBuyer — menus / GUI (Português)
+# ╚════════════════════════════════════════════════════════════════════════╝
+# Menu item:
+#   material, amount, name, lore, glow, custom-model-data, hide-flags
+#   slot: 5 | slots: "0-8,45-53" | slots: [0, 1, "10-16"]
+#   action: what happens on click (several actions separated by ";")
+#   require-shift: true  — only works with Shift+click (protection from misclicks)
+#   condition: flag      — show only if the flag is true ("!flag" — only if false)
+#   alt: {...}           — what to show instead when the condition is false
+# If "name" is not set, the item keeps its vanilla name in the player's client language.
+# Lore lines can start with conditions: "[leveling]...", "[!maxed]...", "[market]..."
+# Colors: &a  HEX: &#C084FC  (gradients are supported too: <gradient:#C084FC:#67E8F9>text</gradient>)
+#
+# Actions: CLOSE, BACK, OPEN_MAIN, OPEN_SELL, OPEN_WORTH, OPEN_EXCLUSIVE, OPEN_CATEGORY:<id>,
+#   TOGGLE_LORE, TOGGLE_AUTOSELL, SELL_INVENTORY, REFRESH, COMMAND:<cmd>, CONSOLE:<cmd>, MESSAGE:<text>
+#   category menus: NEXT_PAGE, PREV_PAGE, SELL_CATEGORY   paged menu: + NEXT_CATEGORY, PREV_CATEGORY
+#   /worth: NEXT_PAGE, PREV_PAGE, SORT, FILTER, SEARCH, CLEAR_SEARCH, CLEAR_FILTER
+#
+# Player placeholders (all menus):
+#   {player} {balance} {level} {max_level} {next_level} {points} {next_points} {points_left} {progress}
+#   {progress_bar} {bonus} {next_bonus} {boost} {perm_boost} {booster} {booster_time} {lore_status}
+#   {autosell_status} {autosell_count} {exclusive_time} {earned} {sold} {level_mode} {market_recovery}
+# Flags: leveling, maxed, boosted, perm_boost, booster, lore_available, lore_on, autosell_available,
+#   autosell_on, exclusive_available, market
+
+# ─────────────────── Item icon format (shared) ───────────────────
+# {item} {price} {price_stack} {stack} {base_price} {amount} {price_inventory} {market_percent}
+# {market_drop} {points_per_item} {autosell_item_status}
+# Flags: has_items, market, leveling, autosell_available, autosell_item
+item-format:
+  lore:
+    - "&8▸ &7Preço: &#4ADE80$&f{price}"
+    - "&8▸ &7Pack &8(×{stack})&7: &#4ADE80$&f{price_stack}"
+    - "[market]&8▸ &7Mercado: &#F87171-{market_drop}% &8(vendido demais)"
+    - "[leveling]&8▸ &7Pontos por unidade: &#C084FC{points_per_item}"
+    - ""
+    - "[has_items]&8▸ &7Você tem: &f{amount} &8→ &#4ADE80$&f{price_inventory}"
+    - "[!has_items]&8▸ &7Você não tem este item"
+    - ""
+    - "&#67E8F9Botão esq. &8» &7vender tudo"
+    - "&#67E8F9Botão dir. &8» &7vender um pack"
+    - "&#67E8F9Shift+Botão esq. &8/ &#67E8F9Q &8» &7vender um"
+    - "[autosell_available]&#67E8F9Shift+Botão dir. &8» &7venda automática: {autosell_item_status}"
+
+# ─────────────────── Category icons ───────────────────
+# Used for every category (main menu and tabs) unless categories.yml sets its own icon name/lore.
+# {category_name} {category_description} {items} + player placeholders; flag "selected" = current tab
+category-icon:
+  name: "{category_name}"
+  lore:
+    - "{category_description}"
+    - ""
+    - "&8▸ &7Itens: &f{items}"
+    - "[leveling]&8▸ &7Nível: &#67E8F9{level} &8| &#4ADE80+{bonus}%"
+    - "[leveling][!maxed]&8▸ {progress_bar}"
+    - "[!leveling]&8▸ &7Sem níveis aqui"
+    - ""
+    - "[selected]&#4ADE80▶ Você está aqui"
+    - "[!selected]&#67E8F9» Clique para abrir"
+
+# Category names and descriptions (ids from categories.yml)
+categories:
+  farming:
+    name: "&#4ADE80&lAgricultura"
+    description:
+      - "&7Trigo, vegetais, cana-de-açúcar"
+      - "&7e tudo das suas fazendas."
+  wood:
+    name: "&#F59E0B&lMadeira"
+    description:
+      - "&7Troncos, tábuas, mudas"
+      - "&7e folhas."
+  blocks:
+    name: "&#D4D4D8&lBlocos e pedra"
+    description:
+      - "&7Pedra, terra, areia, vidro"
+      - "&7e blocos de construção."
+  ores:
+    name: "&#38BDF8&lMinérios"
+    description:
+      - "&7Carvão, ferro, ouro, diamantes,"
+      - "&7netherita e mais."
+  mobs:
+    name: "&#F87171&lDrops de criaturas"
+    description:
+      - "&7Ossos, linha, pólvora,"
+      - "&7pérolas e drops raros."
+  food:
+    name: "&#FBBF24&lComida"
+    description:
+      - "&7Carne, pão, tortas"
+      - "&7e maçãs douradas."
+  ocean:
+    name: "&#2DD4BF&lOceano e pesca"
+    description:
+      - "&7Peixes, algas, prismarinho"
+      - "&7e tesouros do mar."
+  nether:
+    name: "&#FB7185&lNether"
+    description:
+      - "&7Netherrack, fungo do Nether,"
+      - "&7pedra luminosa e pedra-negra."
+  end:
+    name: "&#C084FC&lO End"
+    description:
+      - "&7Pedra do End, fruta do coro,"
+      - "&7púrpura e élitros."
+  plants:
+    name: "&#A3E635&lPlantas e flores"
+    description:
+      - "&7Flores, corantes, folhas"
+      - "&7e outras plantas."
+  redstone:
+    name: "&#EF4444&lRedstone"
+    description:
+      - "&7Pistões, funis, trilhos"
+      - "&7e outros mecanismos."
+  equipment:
+    name: "&#818CF8&lFerramentas e armaduras"
+    description:
+      - "&7Encantamentos aumentam o preço!"
+      - "&8Venda itens encantados com /{cmd_sell}."
+  enchanting:
+    name: "&#F0ABFC&lEncantamentos"
+    description:
+      - "&7O preço do livro depende dos"
+      - "&7encantamentos e do seu nível."
+  misc:
+    name: "&#E7E5E4&lDiversos"
+    description:
+      - "&7Todo o resto"
+      - "&7que pode ser vendido."
+
+# ─────────────────── Main menu (menu-mode: CATEGORIES) ───────────────────
+# Category icon slots are set in categories.yml
+main-menu:
+  title: "&#5B21B6&lShard&#0E7490&lBuyer &8• &8Comprador"
+  size: 54
+  layout:
+    border:
+      material: BLACK_STAINED_GLASS_PANE
+      name: " "
+      slots: "0-9,17,18,26,27,35,36,44-53"
+    corners:
+      material: PURPLE_STAINED_GLASS_PANE
+      name: " "
+      slots: "0,8,45,53"
+    accents:
+      material: LIGHT_BLUE_STAINED_GLASS_PANE
+      name: " "
+      slots: "3,5,48,50"
+    profile:
+      slot: 4
+      material: AMETHYST_SHARD
+      glow: true
+      name: "&#C084FC&l{player}"
+      lore:
+        - "&8▸ &7Saldo: &#4ADE80${balance}"
+        - "&8▸ &7Total ganho: &#4ADE80${earned}"
+        - "&8▸ &7Itens vendidos: &f{sold}"
+        - ""
+        - "[leveling]&8▸ &7Nível: &#67E8F9{level}&7/&#67E8F9{max_level}"
+        - "[leveling]&8▸ &7Bônus de preço: &#4ADE80+{bonus}%"
+        - "[leveling][!maxed]&8▸ &7Para o nível {next_level}: &f{points}&7/&f{next_points}"
+        - "[leveling][!maxed]&8▸ {progress_bar} &7{progress}%"
+        - "[leveling][!maxed]&8▸ &7Próximo bônus: &#4ADE80+{next_bonus}%"
+        - "[leveling][maxed]&#FBBF24✦ Nível máximo alcançado!"
+        - "[!leveling]&8▸ &7Níveis: &f{level_mode}"
+        - "[perm_boost]&8▸ &7Bônus de cargo: &#4ADE80+{perm_boost}%"
+        - "[booster]&8▸ &#FBBF24Booster do servidor: &f{booster} &7({booster_time})"
+    booster:
+      slot: 7
+      condition: booster
+      material: BLAZE_POWDER
+      glow: true
+      name: "&#FBBF24&lBOOSTER {booster}"
+      lore:
+        - "&7Todos os preços estão multiplicados!"
+        - "&8▸ &7Tempo restante: &#FBBF24{booster_time}"
+    sell-menu:
+      slot: 38
+      material: CHEST
+      name: "&#4ADE80&lMenu de venda"
+      lore:
+        - "&7Coloque qualquer item e feche o menu —"
+        - "&7tudo será vendido automaticamente."
+        - "&7Itens encantados, livros e shulkers também!"
+        - ""
+        - "&#67E8F9» Clique para abrir"
+      action: OPEN_SELL
+    exclusive:
+      slot: 40
+      condition: exclusive_available
+      material: NETHER_STAR
+      glow: true
+      name: "&#E879F9&lItens exclusivos"
+      lore:
+        - "&7Itens especiais com preços melhores."
+        - "&7Só dá para vender uma quantidade limitada!"
+        - ""
+        - "&8▸ &7Renova em: &#C084FC{exclusive_time}"
+        - ""
+        - "&#67E8F9» Clique para abrir"
+      action: OPEN_EXCLUSIVE
+    worth:
+      slot: 42
+      material: SPYGLASS
+      name: "&#38BDF8&lLista de preços"
+      lore:
+        - "&7Todos os preços com ordenação,"
+        - "&7filtro por categoria e pesquisa."
+        - ""
+        - "&#67E8F9» Clique para abrir"
+      action: OPEN_WORTH
+    lore-toggle:
+      slot: 46
+      condition: lore_available
+      material: NAME_TAG
+      name: "&fPreços na descrição: {lore_status}"
+      lore:
+        - "&7Mostra o preço de venda na"
+        - "&7descrição dos itens do seu inventário."
+        - "&8Só você vê."
+        - ""
+        - "&#67E8F9» Clique para alternar"
+      action: TOGGLE_LORE
+    autosell-toggle:
+      slot: 47
+      condition: autosell_available
+      material: HOPPER
+      name: "&fVenda automática: {autosell_status}"
+      lore:
+        - "&7Itens com venda automática ligada"
+        - "&7são vendidos assim que você os pega."
+        - "&8▸ &7Itens escolhidos: &f{autosell_count}"
+        - "&8(Shift+Botão dir. num item de uma categoria)"
+        - ""
+        - "&#67E8F9» Clique para alternar"
+      action: TOGGLE_AUTOSELL
+    close:
+      slot: 49
+      material: BARRIER
+      name: "&#F87171Fechar"
+      action: CLOSE
+    sell-inventory:
+      slot: 51
+      material: GOLD_INGOT
+      name: "&#FBBF24&lVender todo o inventário"
+      lore:
+        - "&7Vende todos os itens adequados."
+        - "&8Itens encantados, danificados ou"
+        - "&8renomeados nunca são tocados."
+        - ""
+        - "&#67E8F9Shift+Clique &8» &7vender"
+      require-shift: true
+      action: SELL_INVENTORY
+
+# ─────────────────── Category menu (menu-mode: CATEGORIES) ───────────────────
+# DEFAULT settings for every category menu. A category can override any part of it in
+# "category-menus" below or in categories.yml -> menu (title, size, item-slots, layout, item-format).
+# Extra placeholders: {category_name} {category_plain} (name without colors, for titles) {category_description} {page} {pages} {items}; flags: has_prev, has_next
+category-menu:
+  title: "&8{category_plain} &8({page}/{pages})"
+  size: 54
+  item-slots: "10-16,19-25,28-34,37-43"
+  layout:
+    border:
+      material: BLACK_STAINED_GLASS_PANE
+      name: " "
+      slots: "0-9,17,18,26,27,35,36,44-53"
+    corners:
+      material: PURPLE_STAINED_GLASS_PANE
+      name: " "
+      slots: "0,8"
+    info:
+      slot: 4
+      material: KNOWLEDGE_BOOK
+      name: "{category_name}"
+      lore:
+        - "{category_description}"
+        - ""
+        - "&8▸ &7Itens: &f{items}"
+        - "[leveling]&8▸ &7Nível: &#67E8F9{level}&7/&#67E8F9{max_level} &8| &#4ADE80+{bonus}%"
+        - "[leveling][!maxed]&8▸ {progress_bar} &7{progress}%"
+        - "[leveling][!maxed]&8▸ &7Pontos: &f{points}&7/&f{next_points}"
+        - "[!leveling]&8▸ &7Esta categoria não tem níveis"
+        - "[boosted]&8▸ &7Bônus total de preço: &#4ADE80+{boost}%"
+        - "[booster]&8▸ &#FBBF24Booster do servidor: &f{booster}"
+    back:
+      slot: 45
+      material: ARROW
+      name: "&#F87171« Voltar"
+      action: BACK
+    sell-menu:
+      slot: 46
+      material: CHEST
+      name: "&#4ADE80Menu de venda"
+      action: OPEN_SELL
+    prev:
+      slot: 48
+      condition: has_prev
+      material: SPECTRAL_ARROW
+      name: "&#67E8F9« Página anterior"
+      action: PREV_PAGE
+    page:
+      slot: 49
+      material: PAPER
+      name: "&7Página &f{page}&7/&f{pages}"
+    next:
+      slot: 50
+      condition: has_next
+      material: SPECTRAL_ARROW
+      name: "&#67E8F9Próxima página »"
+      action: NEXT_PAGE
+    autosell-toggle:
+      slot: 52
+      condition: autosell_available
+      material: HOPPER
+      name: "&fVenda automática: {autosell_status}"
+      lore:
+        - "&7Shift+Botão dir. num item liga"
+        - "&7a venda automática dele."
+        - ""
+        - "&#67E8F9» Clique — chave geral"
+      action: TOGGLE_AUTOSELL
+    sell-category:
+      slot: 53
+      material: GOLD_BLOCK
+      name: "&#FBBF24&lVender a categoria inteira"
+      lore:
+        - "&7Vende do seu inventário todos os"
+        - "&7itens desta categoria."
+        - ""
+        - "&#67E8F9Shift+Clique &8» &7vender"
+      require-shift: true
+      action: SELL_CATEGORY
+
+# Per-category menu overrides (keys you set here replace the ones from category-menu).
+# Example: the "ores" category has its own, smaller menu with a cyan design.
+category-menus:
+  ores:
+    title: "&8⛏ {category_plain} &8({page}/{pages})"
+    size: 45
+    item-slots: "10-16,19-25,28-34"
+    layout:
+      border:
+        material: CYAN_STAINED_GLASS_PANE
+        name: " "
+        slots: "0-9,17,18,26,27,35-44"
+      corners:
+        material: LIGHT_BLUE_STAINED_GLASS_PANE
+        name: " "
+        slots: "0,8,36,44"
+      info:
+        slot: 4
+        material: DIAMOND_PICKAXE
+        name: "{category_name}"
+        lore:
+          - "&7Venda recursos e suba de nível!"
+          - ""
+          - "[leveling]&8▸ &7Nível: &#67E8F9{level}&7/&#67E8F9{max_level} &8| &#4ADE80+{bonus}%"
+          - "[leveling][!maxed]&8▸ {progress_bar} &7{progress}%"
+          - "[booster]&8▸ &#FBBF24Booster: &f{booster}"
+      back:
+        slot: 36
+        material: ARROW
+        name: "&#F87171« Voltar"
+        action: BACK
+      prev:
+        slot: 39
+        condition: has_prev
+        material: SPECTRAL_ARROW
+        name: "&#67E8F9« Página anterior"
+        action: PREV_PAGE
+      sell-menu:
+        slot: 40
+        material: CHEST
+        name: "&#4ADE80Menu de venda"
+        action: OPEN_SELL
+      next:
+        slot: 41
+        condition: has_next
+        material: SPECTRAL_ARROW
+        name: "&#67E8F9Próxima página »"
+        action: NEXT_PAGE
+      sell-category:
+        slot: 44
+        material: DIAMOND_BLOCK
+        name: "&#38BDF8&lVender todos os minérios"
+        lore:
+          - "&7Vende do seu inventário todos os"
+          - "&7itens desta categoria."
+          - ""
+          - "&#67E8F9Shift+Clique &8» &7vender"
+        require-shift: true
+        action: SELL_CATEGORY
+
+# ─────────────────── Paged menu (menu-mode: PAGED) ───────────────────
+# One menu, pages go through the categories. A big category takes several pages.
+# Extra placeholders: {category_name} {category_plain} (name without colors, for titles) {category_description} {page} {pages} {category_page}
+#   {category_pages} {prev_category} {next_category}; flags: has_prev, has_next
+paged-menu:
+  title: "&8{category_plain} &8[{page}/{pages}]"
+  size: 54
+  item-slots: "9-44"
+  # Category tabs on top (they scroll if there are more categories than slots)
+  category-tabs:
+    enabled: true
+    slots: "0-8"
+  layout:
+    bottom:
+      material: BLACK_STAINED_GLASS_PANE
+      name: " "
+      slots: "45-53"
+    prev:
+      slot: 45
+      condition: has_prev
+      material: SPECTRAL_ARROW
+      name: "&#67E8F9« Página anterior"
+      lore:
+        - "&8» &7{prev_category}"
+      action: PREV_PAGE
+    lore-toggle:
+      slot: 46
+      condition: lore_available
+      material: NAME_TAG
+      name: "&fPreços na descrição: {lore_status}"
+      action: TOGGLE_LORE
+    autosell-toggle:
+      slot: 47
+      condition: autosell_available
+      material: HOPPER
+      name: "&fVenda automática: {autosell_status}"
+      lore:
+        - "&8▸ &7Itens escolhidos: &f{autosell_count}"
+      action: TOGGLE_AUTOSELL
+    sell-menu:
+      slot: 48
+      material: CHEST
+      name: "&#4ADE80Menu de venda"
+      action: OPEN_SELL
+    info:
+      slot: 49
+      material: AMETHYST_SHARD
+      glow: true
+      name: "{category_name}"
+      lore:
+        - "&8▸ &7Página da categoria: &f{category_page}/{category_pages}"
+        - "&8▸ &7Saldo: &#4ADE80${balance}"
+        - ""
+        - "[leveling]&8▸ &7Nível: &#67E8F9{level}&7/&#67E8F9{max_level} &8| &#4ADE80+{bonus}%"
+        - "[leveling][!maxed]&8▸ {progress_bar} &7{progress}%"
+        - "[!leveling]&8▸ &7Sem níveis aqui"
+        - "[booster]&8▸ &#FBBF24Booster: &f{booster} &7({booster_time})"
+    worth:
+      slot: 50
+      material: SPYGLASS
+      name: "&#38BDF8&lLista de preços"
+      action: OPEN_WORTH
+    exclusive:
+      slot: 51
+      condition: exclusive_available
+      material: NETHER_STAR
+      glow: true
+      name: "&#C084FCExclusivos &7({exclusive_time})"
+      action: OPEN_EXCLUSIVE
+    sell-category:
+      slot: 52
+      material: GOLD_BLOCK
+      name: "&#FBBF24&lVender a categoria inteira"
+      lore:
+        - "&#67E8F9Shift+Clique &8» &7vender"
+      require-shift: true
+      action: SELL_CATEGORY
+    next:
+      slot: 53
+      condition: has_next
+      material: SPECTRAL_ARROW
+      name: "&#67E8F9Próxima página »"
+      lore:
+        - "&8» &7{next_category}"
+      action: NEXT_PAGE
+
+# ─────────────────── Sell menu ───────────────────
+# Put items in → press the button or simply close the menu → everything is sold.
+# Set button.enabled: false to use all 54 slots for items.
+sell-menu:
+  title: "&8Coloque aqui os itens para vender"
+  size: 54
+  button:
+    enabled: true
+    slot: 49
+    material: LIME_STAINED_GLASS_PANE
+    glow: true
+    # {total} {amount} {positions} {points_total} {unsellable}; flags: has_items, has_points, has_unsellable
+    name: "&#4ADE80&lVENDER POR ${total}"
+    lore:
+      - "&8▸ &7Itens: &f{amount} &8({positions} tipos)"
+      - "[has_points]&8▸ &7Pontos de nível: &#C084FC+{points_total}"
+      - "[has_unsellable]&8▸ &#F87171Não vendáveis: {unsellable} &8(serão devolvidos)"
+      - ""
+      - "&7Ou simplesmente feche o menu."
+    # how the button looks when there is nothing to sell
+    empty:
+      material: GRAY_STAINED_GLASS_PANE
+      name: "&7Coloque itens"
+      lore:
+        - "&8Arraste para cá itens do seu inventário"
+        - "&8e feche o menu ou clique neste botão."
+        - "[has_unsellable]&#F87171Estes itens não podem ser vendidos: {unsellable}"
+
+# ─────────────────── /worth — price list ───────────────────
+# Extra placeholders: {page} {pages} {count} {sort} {filter} {search}; flags: has_prev, has_next, searching, filtered
+worth-menu:
+  title: "&8Lista de preços &8({page}/{pages})"
+  size: 54
+  item-slots: "0-44"
+  # PRICE_DESC / PRICE_ASC / NAME / CATEGORY
+  default-sort: PRICE_DESC
+  show-enchantments: true
+  sort-names:
+    PRICE_DESC: "&fmais caros primeiro"
+    PRICE_ASC: "&fmais baratos primeiro"
+    NAME: "&fpor nome"
+    CATEGORY: "&fpor categoria"
+  filter-all-name: "&ftodas as categorias"
+  search-none: "&8nenhuma"
+  # {item} {price} {price_stack} {stack} {base_price} {category_name} {market_percent} {market_drop} {points_per_item}
+  # flags: market, auto (price calculated from a recipe), leveling
+  item-format:
+    lore:
+      - "&8▸ &7Preço: &#4ADE80$&f{price}"
+      - "&8▸ &7Pack &8(×{stack})&7: &#4ADE80$&f{price_stack}"
+      - "[market]&8▸ &7Mercado: &#F87171-{market_drop}%"
+      - "&8▸ &7Categoria: &f{category_name}"
+      - "[auto]&8Preço calculado pela receita de crafting"
+  # Enchanted books. hide-flags: false — the client shows the enchantment name in the player's language.
+  # {max_level} {price} {levels}
+  enchant-format:
+    hide-flags: false
+    lore:
+      - ""
+      - "&7Preço do livro por nível:"
+      - "{levels}"
+      - ""
+      - "&8Encantamentos em armaduras e"
+      - "&8ferramentas também aumentam o preço."
+    level-line: "&8 ▸ &7{level_roman}&8: &#4ADE80$&f{price}"
+  layout:
+    bottom:
+      material: BLACK_STAINED_GLASS_PANE
+      name: " "
+      slots: "45-53"
+    prev:
+      slot: 45
+      condition: has_prev
+      material: SPECTRAL_ARROW
+      name: "&#67E8F9« Página anterior"
+      action: PREV_PAGE
+    info:
+      slot: 46
+      material: PAPER
+      name: "&7Página &f{page}&7/&f{pages}"
+      lore:
+        - "&8▸ &7Encontrados: &f{count}"
+    sort:
+      slot: 47
+      material: COMPARATOR
+      name: "&fOrdenar: {sort}"
+      lore:
+        - "&#67E8F9Botão esq. &8» &7próximo"
+        - "&#67E8F9Botão dir. &8» &7anterior"
+      action: SORT
+    filter:
+      slot: 48
+      material: HOPPER
+      name: "&fCategoria: {filter}"
+      lore:
+        - "&#67E8F9Botão esq. &8» &7próximo"
+        - "&#67E8F9Botão dir. &8» &7anterior"
+      action: FILTER
+    close:
+      slot: 49
+      material: BARRIER
+      name: "&#F87171« Voltar"
+      action: BACK
+    search:
+      slot: 50
+      material: OAK_SIGN
+      name: "&fPesquisar: &f{search}"
+      lore:
+        - "&7Clique e digite um nome no chat"
+        - "&8(nome em inglês ou id do item)"
+      action: SEARCH
+    clear:
+      slot: 51
+      condition: searching
+      material: RED_DYE
+      name: "&#F87171Limpar pesquisa"
+      action: CLEAR_SEARCH
+    next:
+      slot: 53
+      condition: has_next
+      material: SPECTRAL_ARROW
+      name: "&#67E8F9Próxima página »"
+      action: NEXT_PAGE
+
+# ─────────────────── Exclusive items ───────────────────
+# The menu refreshes every second (timer). Do NOT put {time_left} into the title!
+# Extra placeholders: {time_left} {count} {limit_mode}
+# item-format: {item} {price} {base_price} {left} {limit} {sold} {price_left} {points_per_item}
+#   flags: available, give_points
+exclusive-menu:
+  title: "&#7E22CE&lItens exclusivos"
+  size: 36
+  item-slots: "11-15,20-24"
+  item-format:
+    glow: true
+    lore:
+      - "&8▸ &7Preço: &#4ADE80$&f{price}"
+      - "&8▸ &7Você pode vender: &f{left}&7/&f{limit} &8({limit_mode})"
+      - "[give_points]&8▸ &7Pontos por unidade: &#C084FC{points_per_item}"
+      - "[available]&8▸ &7Você ainda pode ganhar: &#4ADE80$&f{price_left}"
+      - "[!available]&#F87171✖ Limite atingido"
+      - ""
+      - "&8▸ &7Renova em: &#C084FC{time_left}"
+      - ""
+      - "&#67E8F9Botão esq. &8» &7vender o máximo possível"
+      - "&#67E8F9Botão dir. &8» &7vender um pack"
+      - "&#67E8F9Shift+Clique &8» &7vender um"
+  layout:
+    border:
+      material: MAGENTA_STAINED_GLASS_PANE
+      name: " "
+      slots: "0-10,16-19,25-35"
+    corners:
+      material: PURPLE_STAINED_GLASS_PANE
+      name: " "
+      slots: "0,8,27,35"
+    info:
+      slot: 4
+      material: CLOCK
+      name: "&#E879F9&lExclusivos"
+      lore:
+        - "&7Itens e limites renovam em:"
+        - "&#C084FC{time_left}"
+        - ""
+        - "&8▸ &7Limite: &f{limit_mode}"
+    back:
+      slot: 31
+      material: ARROW
+      name: "&#F87171« Voltar"
+      action: BACK

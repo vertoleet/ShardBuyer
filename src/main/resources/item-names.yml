@@ -1,0 +1,12 @@
+# ShardBuyer — custom item names (optional).
+#
+# By default item names in chat messages are sent as translatable text, so every player
+# automatically sees them in the language of their own Minecraft client. Menus show the
+# vanilla item name too. You don't have to fill this file.
+#
+# Add an item here only if you want to force a custom name (it is then used everywhere,
+# also for searching in /worth). Colors and HEX are supported.
+#
+# Examples:
+# DIAMOND: "&bShiny Diamond"
+# DRIED_KELP_BLOCK: "<gradient:#86EFAC:#22C55E>Kelp Cube</gradient>"

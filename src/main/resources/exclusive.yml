@@ -1,0 +1,101 @@
+# ╔══════════════════════════════════════════════════════════════════════╗
+# ║                     ShardBuyer — exclusive items                     ║
+# ╚══════════════════════════════════════════════════════════════════════╝
+# Special items with a boosted price that can only be sold a limited number of times.
+# Limits reset every reset-interval. With rotation enabled, a new random set of items
+# is picked from the list each time.
+# The menu is configured in lang/<code>/menus.yml -> exclusive-menu. Open it: /buyer exclusive
+
+enabled: true
+# How often limits (and the item set) refresh: 30m, 6h, 1d, 1d12h ...
+reset-interval: 12h
+# PLAYER — every player has their own limit, GLOBAL — one shared limit for the whole server
+limit-mode: PLAYER
+# Apply the level bonus to exclusive items (permission multipliers and the booster always apply)
+apply-level-boost: true
+# Give leveling points (to the category the item belongs to)
+give-points: true
+# Announce the refresh in chat
+announce-reset: true
+
+rotation:
+  # true — "amount" random items are picked from the list (using weight)
+  # false — all listed items are available
+  enabled: true
+  amount: 5
+
+# material — item; price — price per item; points — points per item;
+# limit — how many can be sold per period; weight — chance to be picked for the rotation
+items:
+  diamond:
+    material: DIAMOND
+    price: 120
+    points: 150
+    limit: 32
+    weight: 3
+  emerald:
+    material: EMERALD
+    price: 75
+    points: 90
+    limit: 32
+    weight: 3
+  netherite_scrap:
+    material: NETHERITE_SCRAP
+    price: 450
+    points: 400
+    limit: 4
+    weight: 1
+  totem:
+    material: TOTEM_OF_UNDYING
+    price: 400
+    points: 300
+    limit: 3
+    weight: 1
+  shulker_shell:
+    material: SHULKER_SHELL
+    price: 100
+    points: 120
+    limit: 8
+    weight: 2
+  blaze_rod:
+    material: BLAZE_ROD
+    price: 25
+    points: 30
+    limit: 64
+    weight: 4
+  ender_pearl:
+    material: ENDER_PEARL
+    price: 20
+    points: 25
+    limit: 64
+    weight: 4
+  ghast_tear:
+    material: GHAST_TEAR
+    price: 40
+    points: 45
+    limit: 16
+    weight: 3
+  golden_apple:
+    material: GOLDEN_APPLE
+    price: 200
+    points: 150
+    limit: 16
+    weight: 2
+  heart_of_the_sea:
+    material: HEART_OF_THE_SEA
+    price: 400
+    points: 300
+    limit: 2
+    weight: 1
+  pumpkin_pie:
+    material: PUMPKIN_PIE
+    price: 15
+    points: 15
+    limit: 128
+    weight: 4
+  phantom_membrane:
+    material: PHANTOM_MEMBRANE
+    price: 18
+    points: 20
+    limit: 64
+    weight: 3

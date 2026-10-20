@@ -1,0 +1,151 @@
+# ╔════════════════════════════════════════════════════════════╗
+# ║              ShardBuyer — messages (Українська)
+# ╚════════════════════════════════════════════════════════════╝
+# Colors: &a, &l ...  HEX: &#C084FC  (gradients are supported too: <gradient:#C084FC:#67E8F9>text</gradient>)
+# {prefix} — the prefix below. {cmd_menu} {cmd_sell} {cmd_worth} {cmd_admin} — command names from config.yml
+# An empty string "" disables a message. Multi-line messages can be written as a list.
+# Item names ({item}) are shown in each player's own client language automatically.
+
+prefix: "&#C084FC&lShard&#67E8F9&lBuyer &8» &7"
+
+no-permission: "{prefix}&#F87171У вас немає прав."
+players-only: "{prefix}&#F87171Ця команда лише для гравців."
+reloaded: "{prefix}&#4ADE80Перезавантажено за &f{ms} мс&#4ADE80. Предметів з ціною: &f{count}"
+unknown-category: "{prefix}&#F87171Категорію &f{category} &#F87171не знайдено."
+
+status:
+  enabled: "&#4ADE80УВІМК"
+  disabled: "&#F87171ВИМК"
+
+help:
+  - "&8&m                                                    "
+  - "  &#C084FC&lShard&#67E8F9&lBuyer &8• &7Команди"
+  - ""
+  - "  &#C084FC/{cmd_menu} &8[категорія] &8— &7відкрити скупника"
+  - "  &#C084FC/{cmd_sell} &8— &7меню продажу (поклади й закрий)"
+  - "  &#C084FC/{cmd_sell} hand &8— &7продати предмет у руці"
+  - "  &#C084FC/{cmd_sell} all &8— &7продати весь інвентар"
+  - "  &#C084FC/{cmd_worth} &8— &7ціни на всі предмети"
+  - "  &#C084FC/{cmd_worth} hand &8— &7ціна предмета в руці"
+  - "  &#C084FC/{cmd_menu} lore &8— &7увімк/вимк ціну в описі предметів"
+  - "  &#C084FC/{cmd_menu} autosell &8— &7увімк/вимк автопродаж"
+  - "  &#C084FC/{cmd_menu} level &8— &7ваш рівень скупника"
+  - "  &#C084FC/{cmd_menu} exclusive &8— &7ексклюзивні предмети"
+  - "&8&m                                                    "
+
+sell:
+  # {money} {amount} {positions}, {points} = points-part (or empty)
+  success: "{prefix}&fПродано &#67E8F9{amount} &fшт. за &#4ADE80${money}{points}"
+  points-part: " &8(&#C084FC+{points} &7очок&8)"
+  detail-line: "  &8▸ &7{item} &8×&f{amount} &8→ &#4ADE80${money}"
+  detail-more: "  &8▸ &7...і ще &f{count} &7позицій"
+  nothing: "{prefix}&#F87171У вас немає предметів, які можна продати."
+  nothing-item: "{prefix}&#F87171У вас немає &f{item}&#F87171 для продажу."
+  nothing-category: "{prefix}&#F87171У вас немає предметів з категорії {category}&#F87171."
+  failed: "{prefix}&#F87171Не вдалося зарахувати гроші. Предмети повернуто."
+  returned: "{prefix}&#FBBF24Предмети, які не продаються, повернуто &7({count} шт.)"
+  hand-empty: "{prefix}&#F87171Візьміть предмет у руку."
+  hand-unsellable: "{prefix}&#F87171Цей предмет не можна продати."
+  menu-empty: "{prefix}&7Покладіть предмети в меню, щоб продати їх."
+  usage: "{prefix}&7Використання: &#C084FC/{cmd_sell} &8| &#C084FC/{cmd_sell} hand &8| &#C084FC/{cmd_sell} all"
+
+autosell:
+  sold: "&#4ADE80+${money} &8| &f{item} &7×{amount}{points}"
+  item-enabled: "{prefix}&#4ADE80Автопродаж &f{item} &#4ADE80увімкнено."
+  item-disabled: "{prefix}&#F87171Автопродаж &f{item} &#F87171вимкнено."
+  master-enabled: "{prefix}&#4ADE80Автопродаж увімкнено &7(обрано предметів: {count})"
+  master-disabled: "{prefix}&#F87171Автопродаж вимкнено."
+  disabled: "{prefix}&#F87171Автопродаж вимкнено на сервері."
+
+lore:
+  enabled: "{prefix}&#4ADE80Ціну в описі предметів увімкнено."
+  disabled: "{prefix}&#F87171Ціну в описі предметів вимкнено."
+  # {reason}
+  unavailable: "{prefix}&#F87171Ціна в описі недоступна: &f{reason}"
+  reason-missing: "не встановлено ProtocolLib (потрібна версія 5.2.0 або новіша)"
+  reason-disabled: "ProtocolLib {version} не запустився — найімовірніше, версія не підтримує ваш сервер, потрібна 5.2.0+"
+  reason-error: "помилка підключення до ProtocolLib: {error}"
+  reason-config: "вимкнено в config.yml (price-lore.enabled: false)"
+
+level:
+  # {level} {bonus} {category_name}, {category} = category-part (or empty)
+  up: "{prefix}&#FBBF24Рівень скупника{category} &#FBBF24підвищено до &f{level}&#FBBF24! Бонус до цін: &#4ADE80+{bonus}%"
+  category-part: " &7({category}&7)"
+  disabled: "{prefix}&#F87171Прокачку вимкнено."
+  info-header: "{prefix}&fВаш рівень скупника:"
+  info-line: "  &7{category} &fРів. &#67E8F9{level}&7/&#67E8F9{max_level} &8| &#4ADE80+{bonus}% &8| &f{points}&7/&f{next_points} {progress_bar} &7{progress}%"
+  info-line-max: "  &7{category} &fРів. &#67E8F9{level} &#FBBF24(максимум) &8| &#4ADE80+{bonus}%"
+  mode:
+    global: "спільний"
+    per_category: "за категоріями"
+    disabled: "вимкнено"
+
+worth:
+  hand: "{prefix}&f{item} &7×{amount}&f: &#4ADE80${price} &8(за 1 шт: ${price_one})"
+  hand-shulker: "{prefix}&fВміст шалкера продасться за &#4ADE80${price}"
+  unsellable: "{prefix}&f{item} &#F87171не можна продати &8({reason}&8)"
+  search-prompt: "{prefix}&#FBBF24Напишіть у чат назву предмета для пошуку. &7(cancel — скасувати)"
+  search-cancelled: "{prefix}&7Пошук скасовано."
+
+# Why an item cannot be sold
+reasons:
+  ok: "&#4ADE80можна продати"
+  empty: "&7порожньо"
+  no_price: "&7немає ціни"
+  disabled: "&7заборонено до продажу"
+  renamed: "&7перейменовано"
+  lore: "&7особливий предмет"
+  custom_model: "&7кастомний предмет"
+  container_not_empty: "&7всередині є предмети"
+  gui: "&7предмет меню"
+
+exclusive:
+  limit-reached: "{prefix}&#F87171Ви вже здали максимум &f{item}&#F87171. Оновлення через &f{time}"
+  sold: "{prefix}&#C084FCЕксклюзив: &fпродано &#67E8F9{amount} &f{item} за &#4ADE80${money}{points} &8(залишилось {left}/{limit})"
+  reset-broadcast: "{prefix}&#C084FCЕксклюзивні предмети оновилися! &7Дивіться &#C084FC/{cmd_menu} exclusive"
+  disabled: "{prefix}&#F87171Ексклюзивні предмети вимкнено."
+  limit-mode:
+    player: "особисто для вас"
+    global: "спільний на сервер"
+
+booster:
+  started: "{prefix}&#FBBF24&lБУСТЕР! &fУсі ціни скупника &#FBBF24{multiplier} &fна &#FBBF24{time}&f!"
+  stopped: "{prefix}&7Бустер зупинено."
+  ended: "{prefix}&7Глобальний бустер цін закінчився."
+
+admin:
+  help:
+    - "&8&m                                                    "
+    - "  &#C084FC&lShard&#67E8F9&lBuyer &8• &7Адмін"
+    - ""
+    - "  &#C084FC/{cmd_admin} reload &8— &7перезавантажити файли"
+    - "  &#C084FC/{cmd_admin} setprice <ціна> [предмет] &8— &7задати ціну (без предмета — у руці)"
+    - "  &#C084FC/{cmd_admin} delprice [предмет] &8— &7прибрати ручну ціну"
+    - "  &#C084FC/{cmd_admin} info &8— &7розбір ціни предмета в руці"
+    - "  &#C084FC/{cmd_admin} points <гравець> <add|set|take> <к-сть> [категорія]"
+    - "  &#C084FC/{cmd_admin} resetlevel <гравець> &8— &7скинути прокачку"
+    - "  &#C084FC/{cmd_admin} market <reset|info> [предмет] &8— &7динамічний ринок"
+    - "  &#C084FC/{cmd_admin} exclusive reset &8— &7оновити ексклюзиви зараз"
+    - "  &#C084FC/{cmd_admin} booster <множник> <час> &8| &#C084FC/{cmd_admin} booster stop"
+    - "  &#C084FC/{cmd_admin} dump &8— &7вивантажити всі ціни в computed-prices.yml"
+    - "&8&m                                                    "
+  bad-number: "{prefix}&#F87171Невірне число: &f{value}"
+  unknown-item: "{prefix}&#F87171Невідомий предмет: &f{item}"
+  price-set: "{prefix}&#4ADE80Ціну &f{item} &#4ADE80встановлено: &f${price}"
+  price-removed: "{prefix}&#4ADE80Ручну ціну &f{item} &#4ADE80видалено. Поточна ціна: &f${price}"
+  source-manual: "&#FBBF24вручну (prices.yml)"
+  source-auto: "&#67E8F9розрахована за рецептами"
+  info:
+    - "{prefix}&f{item} &8({material})"
+    - "  &7Продається: {sellable} &8({reason}&8)"
+    - "  &7Базова ціна: &#4ADE80${base} &8— {source}"
+    - "  &7Цей предмет: &#4ADE80${unit} &8| &7для вас: &#4ADE80${player_price}"
+    - "  &7Ринок: &f{market}% &8(ключ {market_key}, продано {sold})"
+    - "  &7Категорія: &f{category} &8| &7очок за шт.: &#C084FC{points}"
+  level-reset: "{prefix}&#4ADE80Прокачку гравця &f{player} &#4ADE80скинуто."
+  need-category: "{prefix}&#F87171У режимі PER_CATEGORY вкажіть категорію."
+  points-changed: "{prefix}&#4ADE80У &f{player} &#4ADE80тепер &f{points} &#4ADE80очок (рівень {level})."
+  market-reset: "{prefix}&#4ADE80Ринок скинуто: &f{item}"
+  market-info: "{prefix}&f{item}&7: продано &f{sold}&7, ціна &f{percent}%"
+  exclusive-reset: "{prefix}&#4ADE80Ексклюзивні предмети оновлено."
+  dumped: "{prefix}&#4ADE80Вивантажено цін: &f{count} &7→ plugins/ShardBuyer/computed-prices.yml"

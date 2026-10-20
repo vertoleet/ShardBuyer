@@ -1,0 +1,433 @@
+# ╔══════════════════════════════════════════════════════════════════════╗
+# ║                        ShardBuyer — categories                       ║
+# ╚══════════════════════════════════════════════════════════════════════╝
+# The category id (key) is used in commands: /buyer ores, /worth ores
+# Category NAMES and DESCRIPTIONS are translated in lang/<code>/menus.yml -> categories.
+#
+#   enabled: true/false      — turn the category on/off
+#   slot                     — icon slot in the main menu (menu-mode: CATEGORIES)
+#   icon                     — icon: material, glow, custom-model-data
+#                              (name/lore can be set here too, otherwise lang/<code>/menus.yml -> category-icon is used)
+#   name / description       — optional: override the translated name/description
+#   leveling: true/false     — does the category give points and use the level bonus
+#   permission: "perm.node"  — permission required to open the category (optional)
+#   sort: CONFIG / PRICE_DESC / PRICE_ASC / NAME — item order
+#   items                    — exact ids (DIAMOND), patterns (*_LOG, RAW_*) and "*" —
+#                              every other priced item that is not in another category.
+#                              Exact ids win over patterns. Only items with a price are shown.
+#   menu                     — this category's own menu (menu-mode: CATEGORIES). You can set only
+#                              some keys (title, size, item-slots, layout, item-format);
+#                              the rest comes from lang/<code>/menus.yml -> category-menus / category-menu
+#   levels                   — own levels for this category (only with leveling.mode: PER_CATEGORY),
+#                              same format as config.yml -> leveling (type, levels, formula)
+
+categories:
+
+  farming:
+    slot: 19
+    leveling: true
+    icon:
+      material: WHEAT
+    items:
+      - WHEAT
+      - WHEAT_SEEDS
+      - HAY_BLOCK
+      - CARROT
+      - POTATO
+      - POISONOUS_POTATO
+      - BEETROOT
+      - BEETROOT_SEEDS
+      - MELON_SLICE
+      - MELON
+      - MELON_SEEDS
+      - PUMPKIN
+      - CARVED_PUMPKIN
+      - PUMPKIN_SEEDS
+      - SUGAR_CANE
+      - SUGAR
+      - CACTUS
+      - COCOA_BEANS
+      - SWEET_BERRIES
+      - GLOW_BERRIES
+      - BAMBOO
+      - BROWN_MUSHROOM
+      - RED_MUSHROOM
+      - EGG
+      - HONEYCOMB
+      - HONEY_BOTTLE
+      - HONEY_BLOCK
+      - HONEYCOMB_BLOCK
+      - TORCHFLOWER_SEEDS
+      - PITCHER_POD
+
+  wood:
+    slot: 20
+    icon:
+      material: OAK_LOG
+    items:
+      - STICK
+      - "*_LOG"
+      - "*_WOOD"
+      - "STRIPPED_*"
+      - "*_PLANKS"
+      - "*_STEM"
+      - "*_HYPHAE"
+      - "*_SAPLING"
+      - "*_PROPAGULE"
+      - BAMBOO_BLOCK
+
+  blocks:
+    slot: 21
+    icon:
+      material: STONE_BRICKS
+    items:
+      - COBBLESTONE
+      - STONE
+      - SMOOTH_STONE
+      - DIRT
+      - GRASS_BLOCK
+      - COARSE_DIRT
+      - ROOTED_DIRT
+      - MUD
+      - CLAY_BALL
+      - CLAY
+      - SAND
+      - RED_SAND
+      - GRAVEL
+      - FLINT
+      - GRANITE
+      - DIORITE
+      - ANDESITE
+      - TUFF
+      - CALCITE
+      - DEEPSLATE
+      - COBBLED_DEEPSLATE
+      - OBSIDIAN
+      - ICE
+      - PACKED_ICE
+      - BLUE_ICE
+      - SNOWBALL
+      - SNOW_BLOCK
+      - POINTED_DRIPSTONE
+      - DRIPSTONE_BLOCK
+      - BRICK
+      - GLASS
+      - "*SANDSTONE*"
+      - "*_BRICKS"
+      - "POLISHED_*"
+      - "*_SLAB"
+      - "*_STAIRS"
+      - "*_WALL"
+      - "*_TERRACOTTA"
+      - TERRACOTTA
+      - "*_CONCRETE"
+      - "*_CONCRETE_POWDER"
+      - "*GLASS*"
+      - "*_WOOL"
+      - "*_CARPET"
+
+  ores:
+    slot: 22
+    # This category has its own menu design: see lang/<code>/menus.yml -> category-menus -> ores
+    icon:
+      material: DIAMOND
+    sort: PRICE_DESC
+    items:
+      - COAL
+      - CHARCOAL
+      - RAW_IRON
+      - IRON_INGOT
+      - IRON_NUGGET
+      - RAW_GOLD
+      - GOLD_INGOT
+      - GOLD_NUGGET
+      - RAW_COPPER
+      - COPPER_INGOT
+      - REDSTONE
+      - LAPIS_LAZULI
+      - DIAMOND
+      - EMERALD
+      - QUARTZ
+      - AMETHYST_SHARD
+      - ANCIENT_DEBRIS
+      - NETHERITE_SCRAP
+      - NETHERITE_INGOT
+      - "*_ORE"
+      - "RAW_*_BLOCK"
+      - COAL_BLOCK
+      - IRON_BLOCK
+      - GOLD_BLOCK
+      - COPPER_BLOCK
+      - REDSTONE_BLOCK
+      - LAPIS_BLOCK
+      - DIAMOND_BLOCK
+      - EMERALD_BLOCK
+      - QUARTZ_BLOCK
+      - AMETHYST_BLOCK
+      - NETHERITE_BLOCK
+  mobs:
+    slot: 23
+    icon:
+      material: BONE
+    items:
+      - ROTTEN_FLESH
+      - BONE
+      - BONE_MEAL
+      - BONE_BLOCK
+      - STRING
+      - SPIDER_EYE
+      - FERMENTED_SPIDER_EYE
+      - GUNPOWDER
+      - ENDER_PEARL
+      - ENDER_EYE
+      - BLAZE_ROD
+      - BLAZE_POWDER
+      - GHAST_TEAR
+      - SLIME_BALL
+      - SLIME_BLOCK
+      - MAGMA_CREAM
+      - PHANTOM_MEMBRANE
+      - LEATHER
+      - RABBIT_HIDE
+      - RABBIT_FOOT
+      - FEATHER
+      - INK_SAC
+      - GLOW_INK_SAC
+      - ARROW
+      - SCUTE
+      - SHULKER_SHELL
+      - TOTEM_OF_UNDYING
+      - NETHER_STAR
+      - DRAGON_BREATH
+      - ECHO_SHARD
+      - EXPERIENCE_BOTTLE
+      - "*_SKULL"
+      - "*_HEAD"
+
+  food:
+    slot: 24
+    icon:
+      material: COOKED_BEEF
+    items:
+      - BEEF
+      - COOKED_BEEF
+      - PORKCHOP
+      - COOKED_PORKCHOP
+      - CHICKEN
+      - COOKED_CHICKEN
+      - MUTTON
+      - COOKED_MUTTON
+      - RABBIT
+      - COOKED_RABBIT
+      - BREAD
+      - BAKED_POTATO
+      - APPLE
+      - GOLDEN_APPLE
+      - ENCHANTED_GOLDEN_APPLE
+      - GOLDEN_CARROT
+      - PUMPKIN_PIE
+      - CAKE
+      - COOKIE
+      - MUSHROOM_STEW
+      - RABBIT_STEW
+      - BEETROOT_SOUP
+      - "COOKED_*"
+
+  ocean:
+    slot: 25
+    icon:
+      material: TROPICAL_FISH
+    items:
+      - KELP
+      - DRIED_KELP
+      - DRIED_KELP_BLOCK
+      - COD
+      - COOKED_COD
+      - SALMON
+      - COOKED_SALMON
+      - TROPICAL_FISH
+      - PUFFERFISH
+      - PRISMARINE_SHARD
+      - PRISMARINE_CRYSTALS
+      - PRISMARINE
+      - PRISMARINE_BRICKS
+      - DARK_PRISMARINE
+      - SEA_LANTERN
+      - NAUTILUS_SHELL
+      - HEART_OF_THE_SEA
+      - CONDUIT
+      - TRIDENT
+      - SEA_PICKLE
+      - SEAGRASS
+      - LILY_PAD
+      - SPONGE
+      - WET_SPONGE
+      - TURTLE_EGG
+      - "*CORAL*"
+
+  nether:
+    slot: 28
+    icon:
+      material: NETHERRACK
+    items:
+      - NETHERRACK
+      - NETHER_BRICK
+      - NETHER_BRICKS
+      - RED_NETHER_BRICKS
+      - NETHER_WART
+      - NETHER_WART_BLOCK
+      - WARPED_WART_BLOCK
+      - SOUL_SAND
+      - SOUL_SOIL
+      - GLOWSTONE_DUST
+      - GLOWSTONE
+      - MAGMA_BLOCK
+      - BASALT
+      - POLISHED_BASALT
+      - SMOOTH_BASALT
+      - BLACKSTONE
+      - GILDED_BLACKSTONE
+      - CRYING_OBSIDIAN
+      - SHROOMLIGHT
+      - CRIMSON_FUNGUS
+      - WARPED_FUNGUS
+      - CRIMSON_ROOTS
+      - WARPED_ROOTS
+      - WEEPING_VINES
+      - TWISTING_VINES
+      - "*BLACKSTONE*"
+
+  end:
+    slot: 29
+    icon:
+      material: END_STONE
+    items:
+      - END_STONE
+      - END_STONE_BRICKS
+      - PURPUR_BLOCK
+      - PURPUR_PILLAR
+      - CHORUS_FRUIT
+      - POPPED_CHORUS_FRUIT
+      - CHORUS_FLOWER
+      - END_ROD
+      - END_CRYSTAL
+      - ELYTRA
+      - DRAGON_HEAD
+
+  plants:
+    slot: 30
+    icon:
+      material: POPPY
+    items:
+      - DANDELION
+      - POPPY
+      - BLUE_ORCHID
+      - ALLIUM
+      - AZURE_BLUET
+      - RED_TULIP
+      - ORANGE_TULIP
+      - WHITE_TULIP
+      - PINK_TULIP
+      - OXEYE_DAISY
+      - CORNFLOWER
+      - LILY_OF_THE_VALLEY
+      - WITHER_ROSE
+      - TORCHFLOWER
+      - PITCHER_PLANT
+      - SUNFLOWER
+      - LILAC
+      - ROSE_BUSH
+      - PEONY
+      - PINK_PETALS
+      - SPORE_BLOSSOM
+      - VINE
+      - GLOW_LICHEN
+      - MOSS_BLOCK
+      - MOSS_CARPET
+      - AZALEA
+      - FLOWERING_AZALEA
+      - SHORT_GRASS
+      - FERN
+      - DEAD_BUSH
+      - HANGING_ROOTS
+      - BIG_DRIPLEAF
+      - SMALL_DRIPLEAF
+      - "*_LEAVES"
+      - "*_DYE"
+
+  redstone:
+    slot: 31
+    icon:
+      material: PISTON
+    items:
+      - REDSTONE_TORCH
+      - REPEATER
+      - COMPARATOR
+      - PISTON
+      - STICKY_PISTON
+      - OBSERVER
+      - HOPPER
+      - DROPPER
+      - DISPENSER
+      - LEVER
+      - TRIPWIRE_HOOK
+      - DAYLIGHT_DETECTOR
+      - TARGET
+      - REDSTONE_LAMP
+      - NOTE_BLOCK
+      - RAIL
+      - POWERED_RAIL
+      - DETECTOR_RAIL
+      - ACTIVATOR_RAIL
+      - TNT
+      - "*_BUTTON"
+      - "*_PRESSURE_PLATE"
+      - "*_DOOR"
+      - "*_TRAPDOOR"
+      - "*MINECART"
+
+  equipment:
+    slot: 32
+    # Example: leveling is OFF in this category (no points, no level bonus)
+    leveling: false
+    sort: PRICE_DESC
+    icon:
+      material: DIAMOND_CHESTPLATE
+    items:
+      - "*_SWORD"
+      - "*_PICKAXE"
+      - "*_AXE"
+      - "*_SHOVEL"
+      - "*_HOE"
+      - "*_HELMET"
+      - "*_CHESTPLATE"
+      - "*_LEGGINGS"
+      - "*_BOOTS"
+      - "*_HORSE_ARMOR"
+      - BOW
+      - CROSSBOW
+      - SHIELD
+      - FISHING_ROD
+      - SHEARS
+      - FLINT_AND_STEEL
+      - "*_SMITHING_TEMPLATE"
+
+  enchanting:
+    slot: 33
+    icon:
+      material: ENCHANTED_BOOK
+    items:
+      - ENCHANTED_BOOK
+      - BOOK
+      - WRITABLE_BOOK
+      - BOOKSHELF
+      - ENCHANTING_TABLE
+      - PAPER
+
+  misc:
+    slot: 34
+    sort: NAME
+    icon:
+      material: CHEST
+    items:
+      - "*"
